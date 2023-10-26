@@ -1,0 +1,9 @@
+---
+# vars file for languages
+
+java_version_rhel: "java-17*"
+
+java_version_ubuntu: "openjdk-17*"
+
+java_version: "11"
+

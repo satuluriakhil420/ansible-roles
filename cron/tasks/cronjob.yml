@@ -1,0 +1,12 @@
+- name: Add a cron job
+  cron:
+    name: "my_cron_job"  # The name for your cron job
+    minute: "0"
+    hour: "12"
+    day: "*"
+    month: "*"
+    weekday: "*"
+    job: "/home/ec2-user/cron.sh"  # Replace with the actual script/command to run
+      #user: your_username  # The user for whom the cron job will run
+      #state: present  # Use 'present' to ensure the cron job exists
+

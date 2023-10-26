@@ -1,0 +1,24 @@
+- name: creating new user
+  hosts: n2
+  become: yes
+
+  roles:
+    - name: usercreation
+      tags:
+        - usercreation_tag
+
+    - name: packageinstallation
+      tags:
+        - packageinstallation_tag
+
+    - name: fileoperation
+      tags:
+        - fileoperation_tag
+
+    - name: directory
+      tags:
+        - directory_tag
+
+    - name: cron
+      tags:
+        - cron_tag

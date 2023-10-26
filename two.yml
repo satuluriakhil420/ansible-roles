@@ -1,0 +1,32 @@
+---
+- name: setting mysql in ubuntu
+  hosts: n2
+  become: yes
+  tasks:
+   - name: install mysql
+     apt:
+      name: mysql-server
+      state: present
+   - name: install python
+     apt:
+      name: python3-pymysql
+      state: present
+   - name: start & enable server
+     service:
+      name: mysql
+      state: started
+      enabled: yes
+   - name: user setup in mysql
+     mysql_user:
+      check_implicit_admin: true
+      login_user: root
+      login_password: admin123
+      user: admin
+      password: admin123
+      host: n2
+        #- name: create db
+        #mysql_db:
+        #name: db
+        #state: present
+   - name: connecting to mysql
+     command: "sudo mysql -u root -padmin123" 

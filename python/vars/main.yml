@@ -1,0 +1,5 @@
+---
+# vars file for python
+
+python_version_rhel: "python3"
+python_version_ubuntu: "python3"

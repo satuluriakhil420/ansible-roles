@@ -1,0 +1,43 @@
+---
+- name: Install MySQL with Root Permission
+  hosts: n2
+  become: yes
+  vars:
+    mysql_root_password: admin123
+    ansible_python_interpreter: /usr/bin/python3  # Set to the appropriate Python interpreter
+
+  tasks:
+    - name: Installing Mysql
+      package:
+         name: "{{ item }}"
+         state: present
+         update_cache: yes
+      loop:
+        - mysql-server
+        - mysql-client
+        - python3-mysqldb
+        - libmysqlclient-dev
+      become: yes
+
+    - name: Install MySQL server on Ubuntu
+      apt:
+        name: mysql-server
+        state: present
+      when: "'ubuntu' in ansible_distribution"
+
+    - name: Start MySQL service (for Ubuntu)
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+      when: "'ubuntu' in ansible_distribution"
+
+    - name: Set MySQL root password
+      mysql_user:
+        name: root
+        password: "{{ mysql_root_password }}"
+        host: localhost
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+      ignore_errors: yes
+
+

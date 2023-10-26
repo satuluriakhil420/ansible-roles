@@ -1,0 +1,6 @@
+- name: installing languages
+  hosts: all
+  become: true
+  
+  roles:
+    - java 

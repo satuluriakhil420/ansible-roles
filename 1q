@@ -1,0 +1,45 @@
+- name: install mysql
+  hosts: n2
+  become: yes
+
+  tasks:
+    - name: mysql Installation
+      block:
+        - name: Installing Mysql and dependencies
+          ansible.builtin.apt:
+            name: "{{ item }}"
+            state: present
+            update_cache: yes
+          loop:
+            - mysql-server
+            - mysql-client
+
+        - name: start and enable mysql service
+          ansible.builtin.service:
+            name: mysql
+            state: started
+            enabled: yes
+
+        - name: creating mysql user
+          ansible.builtin.mysql_user:
+            name: "{{ db_user }}"
+            password: "{{ db_pass }}"
+            priv: '*.*:ALL'
+            host: '%'
+            state: present
+
+        - name: creating mysql database
+          ansible.builtin.mysql_db:
+            name: "{{ db_name }}"
+            state: present
+
+        - name: Enable remote login to mysql
+          ansible.builtin.lineinfile:
+            path: /etc/mysql/mysql.conf.d/mysqld.cnf
+            regexp: '^bind-address'
+            line: 'bind-address = 0.0.0.0'
+            backup: yes
+          notify:
+            - Restart mysql
+      when: ansible_facts['os_family'] == "Debian"
+
